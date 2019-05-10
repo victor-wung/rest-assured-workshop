@@ -38,7 +38,10 @@ public class RestAssuredExercises4Test {
 		given().
 			spec(requestSpec).
 		when().
-		then();
+			get("/xml/de/24848").
+		then().
+			assertThat().
+			body("response.places.place[2].placeName", equalTo("Kropp"));
 	}
 
 	/*******************************************************
@@ -54,7 +57,10 @@ public class RestAssuredExercises4Test {
 		given().
 			spec(requestSpec).
 		when().
-		then();
+			get("/xml/de/24848").
+		then().
+			assertThat().
+			body("response.places.place[1].@latitude", equalTo("54.45"));
 	}
 
 	/*******************************************************
@@ -70,7 +76,10 @@ public class RestAssuredExercises4Test {
 		given().
 			spec(requestSpec).
 		when().
-		then();
+			get("/xml/de/24848").
+		then().
+			assertThat().
+			body("response.places.place.findAll{it.stateAbbreviation=='SH'}.size()", equalTo(4));
 	}
 
 
@@ -87,6 +96,9 @@ public class RestAssuredExercises4Test {
 		given().
 			spec(requestSpec).
 		when().
-		then();
+			get("/xml/de/24848").
+		then().
+			assertThat().
+			body("response.places.place.placeName.grep(~/Klein.*/)", hasSize(2));
 	}
 }

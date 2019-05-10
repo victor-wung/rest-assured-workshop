@@ -38,11 +38,17 @@ public class RestAssuredExercises5Test {
 
 		// Create an instance of the Car object first using
 
+		Car myCar = new Car("Ford", "Focus", 2012);
 
 		given().
 			spec(requestSpec).
+			and().
+			body(myCar).
 		when().
-		then();
+			post("/car/postcar").
+		then().
+			assertThat().
+			statusCode(200);
 	}
 
 	/*******************************************************
@@ -59,11 +65,15 @@ public class RestAssuredExercises5Test {
 		// Deserialize the response to a car object first
 		// Use Car myCar = given(). ...
 
-		given().
-			spec(requestSpec).
-			when();
+		Car myCar =
+			given().
+				spec(requestSpec).
+			when().
+				get("/car/getcar/alfaromeogiulia").as(Car.class);
 
 		// Then, write a JUnit assertion to verify the modelYear
 		// using Assert.assertEquals(<expected>, <actual>)
+
+		Assert.assertEquals(2016, myCar.getModelYear());
 	}
 }

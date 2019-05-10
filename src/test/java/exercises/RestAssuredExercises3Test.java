@@ -38,7 +38,12 @@ public class RestAssuredExercises3Test {
 
 	@BeforeClass
 	public static void createResponseSpecification() {
-
+		responseSpec =
+				new ResponseSpecBuilder().
+						expectStatusCode(200).
+						expectContentType(ContentType.JSON).
+						expectBody("country", equalTo("United States")).
+						build();
 	}
 
 	/*******************************************************
@@ -55,25 +60,33 @@ public class RestAssuredExercises3Test {
 		given().
 			spec(requestSpec).
 		when().
-		then();
+			get("/us/90210").
+		then().
+			spec(responseSpec).
+			and().
+			body("'country abbreviation'", equalTo("US"));
 	}
 
 	/*******************************************************
 	 * Perform a GET request to /us/90210
 	 * Extract the value of the 'country' element in the
 	 * response into a String variable actualCountry
-	 * Use the given JUnit assertion to check on its value
+	 * Use the given JUnit assertion to check on its length
 	 ******************************************************/
 
 	@Test
 	public void extractCountryFromResponse() {
 
-		String actualCountry = "";
+		String actualCountry =
 
-			given().
-				spec(requestSpec).
-			when().
-			then();
+				given().
+					spec(requestSpec).
+				when().
+					get("/us/90210").
+				then().
+					extract().
+					path("country");
+//				toString();
 
 		Assert.assertEquals("United States", actualCountry);
 	}

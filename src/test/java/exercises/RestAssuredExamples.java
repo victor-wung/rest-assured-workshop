@@ -1,5 +1,6 @@
 package exercises;
 
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.tngtech.java.junit.dataprovider.*;
 import dataentities.Address;
 import io.restassured.builder.*;
@@ -10,11 +11,15 @@ import org.junit.runner.RunWith;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 @RunWith(DataProviderRunner.class)
 public class RestAssuredExamples {
+
+    @Rule
+    public WireMockRule wireMockRule = new WireMockRule(options().port(9876));
 
     private static String myAuthenticationToken;
 
@@ -103,7 +108,7 @@ public class RestAssuredExamples {
             get("http://api.zippopotam.us/{countryCode}/{zipCode}").
         then().
             assertThat().
-            body("country", equalTo("UnitedStates"));
+            body("country", equalTo("United States"));
     }
 
     @Test
@@ -200,7 +205,7 @@ public class RestAssuredExamples {
         given().
             spec(requestSpec).
         when().
-            get("/us/90210.json").
+            get("/us/90210").
         then().
             assertThat().
             statusCode(200);
